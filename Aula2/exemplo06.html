@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aula 2</title>
+    </head>
+
+    <body>
+        <canvas  width="400" height="300">
+            Seu navegador não tem suporte ao canvas!
+        </canvas>
+
+
+        <script>
+            var tela = document.getElementsByTagName("canvas")[0];
+            var ctx = tela.getContext("2d");
+
+            ctx.fillStyle = "rgb(150,150,205)";
+
+            ctx.beginPath();
+
+            ctx.arc(200, 150, 50, Math.PI/2, 2*Math.PI, false);
+            ctx.lineTo(200,150);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+        </script>
+    </body>
+</html>
