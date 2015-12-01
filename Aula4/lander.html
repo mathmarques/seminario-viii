@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Lander</title>
+    </head>
+    <body>
+        <h1>Lander Game</h1>
+        <canvas width="400" height="300">
+            Seu navegador nao tem suporte ao canvas!
+        </canvas>
+
+        <script>
+            var tela = document.getElementsByTagName("canvas")[0];
+            var ctx = tela.getContext("2d");
+
+            var gamePlaying = true;
+
+            var g = 15;
+
+            var y = 21, vy = 0, ay = 0;
+            var x = 130, vx = 0, ax = 0;
+
+            var fuel = 400;
+            var downPerSecond = 50;
+
+            // FPS
+            var fps = 60;
+            var dt = 1/fps;
+
+            addEventListener("keydown", teclaPressionada);
+            addEventListener("keyup", teclaSolta);
+
+            setInterval(desenhar, 1000/fps);
+            function desenhar(){
+                // Reduzindo Fuel
+                if(fuel > 0 && ay != 0){
+                    fuel -= downPerSecond*dt;
+                    if(fuel < 0)
+                        fuel = 0;
+                } else
+                    ay = 0;
+
+                vx = vx + ax*dt;
+                x = x + vx*dt;
+
+                vy = vy + ay*dt+g*dt;
+                y = y + vy*dt;
+
+                // Topo do Jogo
+                if(y < 21) {
+                    y = 21;
+                    vy = 0;
+                }
+
+                // Bordas
+                if(x < 0) {
+                    x = 0;
+                    vx = 0;
+                } else if(x > 380) {
+                    x = 380;
+                    vx = 0;
+                }
+
+                // Fim do Jogo
+                if(y > 260){
+                    gamePlaying = false;
+                    y = 260;
+                    vy = 0;
+                    vx = 0;
+                }
+
+                ctx.clearRect(0,0, 400, 300);
+
+                //Fundo Preto
+                ctx.fillStyle = "rgb(0, 0, 0)";
+                ctx.fillRect(0,0,400,300);
+
+                //Barra de Fuel
+                var color = (fuel * 100)/400;
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = "hsl("+color+", 75%, 59%)";
+                ctx.fillRect(0,0,fuel,20);
+
+                //Chão
+                ctx.fillStyle = "brown";
+                ctx.fillRect(0,290,400,10);
+
+                //Ponto
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(30,290,50,10);
+
+                //Nave
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = "rgb(250, 150, 150)";
+                ctx.beginPath();
+                ctx.moveTo(x, 30+y);
+                ctx.lineTo(20+x, 30+y);
+                ctx.lineTo(10+x,    y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+            }
+
+            function teclaPressionada(e){
+                console.log("Tecla: "+e.keyCode);
+                if(!gamePlaying)
+                    return;
+
+                if(e.keyCode==39){
+                    ax = 60;
+                }else if(e.keyCode==37){
+                    ax = -60;
+                }
+                if(e.keyCode==38){
+                    ay = -30;
+                }
+            }
+            function teclaSolta(e){
+                console.log("Tecla: "+e.keyCode);
+
+                if(!gamePlaying) {
+                    if (e.keyCode == 32) {
+                        y = 21;
+                        vy = 0;
+                        ay = 0;
+                        x = 130;
+                        vx = 0;
+                        ax = 0;
+                        fuel = 400;
+                        gamePlaying = true;
+                    }
+                } else {
+                    if(e.keyCode == 39) {
+                        ax = 0;
+                    } else if (e.keyCode == 37) {
+                        ax = 0;
+                    }
+
+                    if (e.keyCode == 38) {
+                        ay = 0;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

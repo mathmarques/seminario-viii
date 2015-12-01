@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Aula 3</title>
+    </head>
+
+    <body>
+        <canvas  width="400" height="300">
+            Seu navegador não tem suporte ao canvas!
+        </canvas>
+
+
+        <script>
+            var tela = document.getElementsByTagName("canvas")[0];
+            var ctx = tela.getContext("2d");
+
+            ctx.fillStyle = "rgb(150,150,205)";
+
+            var fps = 10;
+            var y = 0;
+            var vy = 0;
+            var x = 0;
+            var vx = 0;
+            var dt = 1/fps;
+            var ay = 0;
+            var ax = 0;
+
+            setInterval(desenhar, 1000/fps);
+
+            addEventListener("keydown", teclaPressionada);
+            addEventListener("keyup", teclaSolta);
+
+            function desenhar(){
+                vx = vx + ax*dt;
+                x = x + vx*dt;
+
+                vy = vy + ay*dt;
+                y = y + vy*dt;
+
+
+                ctx.clearRect(0, 0, 400, 300);
+                ctx.beginPath();
+                ctx.moveTo(x,30+y);
+                ctx.lineTo(20+x,30+y);
+                ctx.lineTo(10+x,y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            function teclaPressionada(e){
+                console.log("Tecla: " + e.keyCode);
+
+                if(e.keyCode == 39){
+                    vx = 100;
+                } else if(e.keyCode == 37){
+                    vx = -100;
+                }
+
+                if(e.keyCode == 40){
+                    vy = 100;
+                } else if(e.keyCode == 38){
+                    vy = -100;
+                }
+            }
+
+            function teclaSolta(e){
+                console.log("Tecla: " + e.keyCode);
+
+                if(e.keyCode == 39){
+                    vx = 0;
+                } else if(e.keyCode == 37){
+                    vx = 0;
+                }
+
+                if(e.keyCode == 40){
+                    vy = 0;
+                } else if(e.keyCode == 38){
+                    vy = 0;
+                }
+            }
+
+        </script>
+    </body>
+</html>
